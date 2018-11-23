@@ -20,7 +20,5 @@ app.use(passport.session())
 
 require('./routes/authroute')(app)
 
-//app.use(require('./middlewares/errorHandler_Final'));
-
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
