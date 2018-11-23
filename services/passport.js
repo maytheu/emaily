@@ -41,7 +41,8 @@ passport.use(new googleStrategy({
 passport.use(new facebookStrategy({
     clientID: keys.facebookClientID,
     clientSecret: keys.facebookClientSecret,
-    callbackURL: '/auth/facebook/callback'
+    callbackURL: '/auth/facebook/callback',
+    proxy: true
 },(accessToken, refreshToken, profile, done) =>{
     //check if profile id exist
     User.findOne({id: profile.id}).then((existingUser) =>{
