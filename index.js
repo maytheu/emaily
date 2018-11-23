@@ -1,9 +1,26 @@
 const express = require ('express')
+const mongoose = require('mongoose')
+const passport = require('passport')
+const cookieSession = require('cookie-session')
+const keys = require('./config/keys')
+require('./models/user')
+require('./services/passport')
+
+mongoose.connect(keys.mongoURI)
+
 const app = express()
 
-app.get('/', (req, res) => {
-    res.send({test: 'Trying to test heroku'})
-})
+app.use(cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./routes/authroute')(app)
+
+//app.use(require('./middlewares/errorHandler_Final'));
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
