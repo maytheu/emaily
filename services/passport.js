@@ -12,28 +12,28 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
-    User.findOne({_id: id}).then((user) =>{
+    User.findById(id).then((user) =>{
         done(null, user)
-    }).catch(err => {
-        done(null, err)
     })
 })
 
 passport.use(new googleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
-    callbackURL: '/auth/google/callback', 
+    callbackURL: '/auth/google/callback',
     proxy: true
-}, (accessToken, refreshToken, profile, done) =>{
+}, 
+async (accessToken, refreshToken, profile, done) =>{
     //check if profile id exist
-    User.findOne({profileId: profile.id}).then((existingUser) =>{
-        if(existingUser){
-            //true
-            done(null, existingUser)
-        }else{
-            new User({profileId: profile.id}).save().then(user => done(null, user))
-        }
-    })
+    const existingUser = await User.findOne({profileId: profile.id})
+    if(existingUser){
+        //true
+        done(null, existingUser)
+    }else{
+        const user = await new User({profileId: profile.id}).save()
+        done(null, user)
+    }
+    
 }))
 
 
@@ -44,14 +44,16 @@ passport.use(new facebookStrategy({
     clientSecret: keys.facebookClientSecret,
     callbackURL: '/auth/facebook/callback',
     proxy: true
-},(accessToken, refreshToken, profile, done) =>{
+},
+async (accessToken, refreshToken, profile, done) =>{
     //check if profile id exist
-    User.findOne({id: profile.id}).then((existingUser) =>{
-        if(existingUser){
+    const existingUser = await User.findOne({profileId: profile.id})
+     if(existingUser){
             //true
-            done(null, existingUser)
-        }else{
-            new User({id: profile.id}).save().then(user => done(null, user))
+            return done(null, existingUser)
         }
-    })
+           const user = await new User({profileId: profile.id}).save()
+           done(null, user)
+        
+    
 }))
