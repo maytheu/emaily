@@ -6,5 +6,7 @@ module.exports = {
     mongoURI: 'mongodb://meto:_meto_1@ds041347.mlab.com:41347/emaily_',
     cookieKey: 'hdhxhjaiudsbcxbzu_@nkjbcxubch hxzuihiubehiusdminusdshhskdk',
     stripePublishablekey: 'pk_test_uLKKiNuhIP9GmLB2HzhTzbZN',
-    stripeSecretKey: 'sk_test_M6B1GpdcwQzfvdl5m5F2mHHC'
+    stripeSecretKey: 'sk_test_M6B1GpdcwQzfvdl5m5F2mHHC',
+    sendGridKey: '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',
+    redirectDomian: 'http://localhost:5000'
 }
